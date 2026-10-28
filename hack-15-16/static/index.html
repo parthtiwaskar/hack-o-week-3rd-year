@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An interactive playground for learning neural networks, backpropagation, and model deployment."
+    />
+    <title>Neural Networks — Interactive Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Neural Lab home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M7 9.5 16 5l9 4.5v13L16 27l-9-4.5v-13Z" />
+              <path d="m7.5 10 8.5 4.5 8.5-4.5M16 15v11M11 7.5l9 4.5" />
+              <circle cx="7" cy="10" r="1.5" />
+              <circle cx="16" cy="5" r="1.5" />
+              <circle cx="25" cy="10" r="1.5" />
+            </svg>
+          </span>
+          <span class="brand-name">neural<span>lab</span></span>
+        </a>
+
+        <div class="sidebar-label">YOUR WORKSPACE</div>
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#playground">
+            <span class="nav-icon">⌘</span> Playground
+          </a>
+          <a class="nav-link" href="#concepts">
+            <span class="nav-icon">◇</span> The concepts
+          </a>
+          <a class="nav-link" href="#deployment">
+            <span class="nav-icon">↗</span> Deployment
+          </a>
+        </nav>
+
+        <div class="sidebar-rule"></div>
+        <div class="sidebar-label">THIS EXPERIMENT</div>
+        <div class="experiment-card">
+          <div class="experiment-icon">⊕</div>
+          <div>
+            <strong>The XOR problem</strong>
+            <span>Binary classification</span>
+          </div>
+          <span class="live-dot" aria-label="Ready"></span>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="course-tag"><span class="course-dot"></span> WEEK 15—16</div>
+          <p>From a single neuron to a network that learns.</p>
+          <div class="sidebar-footer">BUILT WITH NUMPY <span>·</span> MADE TO LEARN</div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>LEARNING PATH</span><span>/</span> NEURAL NETWORKS</div>
+          <div class="topbar-right"><span class="status-pill"><span></span> SYSTEM READY</span></div>
+        </header>
+
+        <div class="page-content">
+          <section class="hero" id="playground">
+            <div class="hero-copy">
+              <div class="eyebrow"><span class="eyebrow-line"></span> INTERACTIVE PLAYGROUND</div>
+              <h1>Teach a network<br />to think <span>in patterns.</span></h1>
+              <p>
+                A neural network isn't magic. It's weighted guesses, a little
+                calculus, and the patience to try again. Let's build one from scratch.
+              </p>
+              <div class="hero-meta">
+                <span><i class="meta-icon">◉</i> 1 hidden layer</span>
+                <span><i class="meta-icon">⌁</i> 8 neurons</span>
+                <span><i class="meta-icon">◷</i> ~2 min lesson</span>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="visual-orbit orbit-one"></div>
+              <div class="visual-orbit orbit-two"></div>
+              <div class="network-graphic">
+                <div class="network-layer input-layer">
+                  <span class="network-node"></span><span class="network-node"></span>
+                </div>
+                <div class="network-links"></div>
+                <div class="network-layer hidden-layer">
+                  <span class="network-node"></span><span class="network-node"></span>
+                  <span class="network-node"></span><span class="network-node"></span>
+                </div>
+                <div class="network-links"></div>
+                <div class="network-layer output-layer"><span class="network-node"></span></div>
+              </div>
+              <div class="visual-caption">A SMALL NETWORK, LEARNING A BIG IDEA</div>
+              <span class="visual-coordinate coordinate-one">x₁</span>
+              <span class="visual-coordinate coordinate-two">x₂</span>
+              <span class="visual-coordinate coordinate-three">ŷ</span>
+            </div>
+          </section>
+
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> THE EXPERIMENT</div>
+              <h2>Can it learn XOR?</h2>
+            </div>
+            <span class="experiment-number">01 <span>/ 03</span></span>
+          </div>
+
+          <section class="experiment-grid" aria-label="Neural network experiment">
+            <article class="card training-card">
+              <div class="card-heading">
+                <div class="card-icon train-icon">↗</div>
+                <div><h3>Training setup</h3><p>Choose how your network learns</p></div>
+                <span class="step-label">STEP 01</span>
+              </div>
+
+              <div class="form-label">OPTIMIZER</div>
+              <div class="optimizer-options" role="group" aria-label="Choose an optimizer">
+                <button class="optimizer-option" type="button" data-optimizer="sgd" aria-pressed="false">
+                  <span class="optimizer-symbol">↗</span>
+                  <span class="optimizer-copy"><strong>SGD</strong><small>Steady, one step at a time</small></span>
+                  <span class="radio-dot"></span>
+                </button>
+                <button class="optimizer-option selected" type="button" data-optimizer="adam" aria-pressed="true">
+                  <span class="optimizer-symbol adam-symbol">✳</span>
+                  <span class="optimizer-copy"><strong>Adam</strong><small>Adaptive, quick on its feet</small></span>
+                  <span class="radio-dot"></span>
+                </button>
+              </div>
+
+              <div class="range-heading">
+                <label class="form-label" for="epochs">TRAINING EPOCHS</label>
+                <span class="range-value" id="epochs-value">3,000</span>
+              </div>
+              <input id="epochs" type="range" min="100" max="8000" step="100" value="3000" />
+              <div class="range-labels"><span>100 — quick look</span><span>8,000 — deep practice</span></div>
+
+              <button class="train-button" id="train-button" type="button">
+                <span class="button-sparkle">✳</span><span>Train my network</span><span class="button-arrow">→</span>
+              </button>
+              <div class="inline-message" id="training-message" aria-live="polite">
+                Ready when you are. Your network starts with random weights.
+              </div>
+            </article>
+
+            <article class="card chart-card">
+              <div class="card-heading chart-heading">
+                <div>
+                  <div class="chart-title-row"><h3>Learning curve</h3><span class="chart-live" id="chart-status">WAITING FOR TRAINING</span></div>
+                  <p>Loss tells us how wrong the network is</p>
+                </div>
+                <button class="chart-menu" type="button" aria-label="Chart information">···</button>
+              </div>
+              <div class="chart-wrap">
+                <div class="chart-y-labels"><span>1.0</span><span>0.75</span><span>0.5</span><span>0.25</span><span>0</span></div>
+                <svg class="loss-chart" id="loss-chart" viewBox="0 0 560 220" role="img" aria-label="Training loss chart">
+                  <defs>
+                    <linearGradient id="area-gradient" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#52d6b5" stop-opacity=".22" />
+                      <stop offset="100%" stop-color="#52d6b5" stop-opacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <g class="chart-grid">
+                    <line x1="0" y1="10" x2="560" y2="10"></line>
+                    <line x1="0" y1="58" x2="560" y2="58"></line>
+                    <line x1="0" y1="106" x2="560" y2="106"></line>
+                    <line x1="0" y1="154" x2="560" y2="154"></line>
+                    <line x1="0" y1="202" x2="560" y2="202"></line>
+                  </g>
+                  <path class="chart-area" id="chart-area" d=""></path>
+                  <path class="chart-line" id="chart-line" d=""></path>
+                  <circle class="chart-endpoint" id="chart-endpoint" cx="0" cy="0" r="5"></circle>
+                  <g id="chart-empty" class="chart-empty">
+                    <circle cx="280" cy="100" r="22"></circle>
+                    <path d="M273 100h14M280 93v14"></path>
+                    <text x="280" y="148" text-anchor="middle">Your learning curve will appear here</text>
+                  </g>
+                </svg>
+                <div class="chart-x-labels"><span>START</span><span>TRAINING PROGRESS</span><span>FINISH</span></div>
+              </div>
+              <div class="chart-legend">
+                <span><i class="legend-line"></i> TRAINING LOSS</span>
+                <span class="loss-readout" id="loss-readout">FINAL LOSS <strong>—</strong></span>
+              </div>
+            </article>
+          </section>
+
+          <section class="results-strip" id="results" aria-live="polite">
+            <div class="result-intro"><span class="result-check">✓</span><div><strong id="result-title">The network is ready to learn</strong><span id="result-caption">Press train to see what happens under the hood.</span></div></div>
+            <div class="metric"><span>ACCURACY</span><strong id="accuracy-value">—<small>%</small></strong></div>
+            <div class="metric"><span>STARTING LOSS</span><strong id="starting-loss">—</strong></div>
+            <div class="metric"><span>ENDING LOSS</span><strong id="ending-loss">—</strong></div>
+          </section>
+
+          <div class="lower-grid">
+            <section class="card prediction-card">
+              <div class="card-heading">
+                <div class="card-icon predict-icon">⌕</div>
+                <div><h3>Try a prediction</h3><p>Give the trained network a new input</p></div>
+                <span class="step-label">STEP 02</span>
+              </div>
+              <div class="prediction-inputs">
+                <label class="bit-control"><span>INPUT X₁</span><select id="input-first" aria-label="First input"><option value="0">0</option><option value="1">1</option></select></label>
+                <span class="input-times">×</span>
+                <label class="bit-control"><span>INPUT X₂</span><select id="input-second" aria-label="Second input"><option value="0">0</option><option value="1">1</option></select></label>
+                <button class="predict-button" id="predict-button" type="button" disabled>Predict <span>→</span></button>
+              </div>
+              <div class="prediction-result" id="prediction-result" aria-live="polite">
+                <div class="prediction-mark">?</div>
+                <div class="prediction-copy"><strong>Waiting for a trained model</strong><span>Train your network first, then try an input.</span></div>
+                <div class="confidence"><span>CONFIDENCE</span><strong>—</strong></div>
+              </div>
+            </section>
+
+            <section class="card truth-card">
+              <div class="card-heading truth-heading">
+                <div><h3>The XOR truth table</h3><p>Same inputs, different patterns</p></div>
+                <span class="tiny-badge">THE DATA</span>
+              </div>
+              <table>
+                <thead><tr><th>INPUT X₁</th><th>INPUT X₂</th><th>OUTPUT Y</th><th>NETWORK</th></tr></thead>
+                <tbody id="truth-table-body">
+                  <tr><td>0</td><td>0</td><td class="target-cell">0</td><td class="network-cell pending">—</td></tr>
+                  <tr><td>0</td><td>1</td><td class="target-cell">1</td><td class="network-cell pending">—</td></tr>
+                  <tr><td>1</td><td>0</td><td class="target-cell">1</td><td class="network-cell pending">—</td></tr>
+                  <tr><td>1</td><td>1</td><td class="target-cell">0</td><td class="network-cell pending">—</td></tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+
+          <section class="concepts-section" id="concepts">
+            <div class="section-heading concepts-heading">
+              <div><div class="eyebrow"><span class="eyebrow-line"></span> UNDER THE HOOD</div><h2>How learning happens.</h2></div>
+              <span class="concepts-note">A loop, not a leap.</span>
+            </div>
+            <div class="concept-grid">
+              <article class="concept-card"><span class="concept-index">01 / FORWARD</span><div class="concept-glyph">→</div><h3>Make a guess</h3><p>Inputs travel forward, multiplied by weights and shifted by biases. An activation function decides what passes through.</p><div class="equation">X → ReLU(XW₁ + b₁) → σ(HW₂ + b₂)</div></article>
+              <article class="concept-card"><span class="concept-index">02 / MEASURE</span><div class="concept-glyph measure-glyph">⌁</div><h3>Measure the miss</h3><p>Binary cross-entropy compares the predicted probability with the true answer. A bigger mismatch means a bigger loss.</p><div class="equation">L = −[y log(p) + (1−y) log(1−p)]</div></article>
+              <article class="concept-card"><span class="concept-index">03 / BACKWARD</span><div class="concept-glyph backward-glyph">←</div><h3>Learn from it</h3><p>Backpropagation applies the chain rule to send the error backwards and figure out which weights contributed most.</p><div class="equation">∂L/∂W = ∂L/∂p · ∂p/∂z · ∂z/∂W</div></article>
+              <article class="concept-card"><span class="concept-index">04 / UPDATE</span><div class="concept-glyph update-glyph">↻</div><h3>Take a better step</h3><p>SGD nudges weights against the gradient. Adam tracks gradient averages to adjust each step as learning unfolds.</p><div class="equation">W ← W − η · gradient</div></article>
+            </div>
+          </section>
+
+          <section class="deployment-section" id="deployment">
+            <div class="deployment-icon">↗</div>
+            <div class="deployment-copy"><div class="eyebrow"><span class="eyebrow-line"></span> FROM PLAYGROUND TO PRODUCTION</div><h2>Learn it. Save it. Serve it.</h2><p>Once trained, a model's weights can be saved with pickle or joblib, then loaded into an API to make predictions without training again.</p></div>
+            <div class="deployment-flow"><span>TRAIN</span><i>→</i><span>SAVE</span><i>→</i><span class="flow-active">PREDICT</span></div>
+          </section>
+
+          <footer class="page-footer"><span>WEEK 15—16 <i>·</i> NEURAL NETWORKS FROM SCRATCH</span><span>MADE TO MAKE THE MATH MAKE SENSE <b>✳</b></span></footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

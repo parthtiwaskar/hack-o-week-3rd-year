@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deep Learning & LLMs — Week 17–18 Interactive Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>"
+    />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">⚡</span>
+          <div>
+            <div class="brand-title">DEEPLAB<span>17-18</span></div>
+            <div class="brand-sub">PyTorch · CNN · RNN · LLMs</div>
+          </div>
+        </div>
+
+        <div class="device-badge" id="device-badge">
+          <span class="pulse-dot"></span>
+          <span id="device-text">Device: Detecting…</span>
+        </div>
+
+        <nav class="nav-menu">
+          <a class="nav-item active" href="#section-pytorch"><span>01</span> PyTorch & Autograd</a>
+          <a class="nav-item" href="#section-cnn"><span>02</span> CNNs & Convolutions</a>
+          <a class="nav-item" href="#section-sequence"><span>03</span> RNN / LSTM / GRU</a>
+          <a class="nav-item" href="#section-regularization"><span>04</span> Regularization</a>
+          <a class="nav-item" href="#section-transfer"><span>05</span> Transfer Learning</a>
+          <a class="nav-item" href="#section-transformer"><span>06</span> Attention & Transformers</a>
+          <a class="nav-item" href="#section-llm"><span>07</span> LLM APIs & Open Models</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div>Week 17–18 Advanced Deep Learning</div>
+          <small>PyTorch v2.x Ready</small>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+          <div>
+            <h1>Deep Learning & LLM Systems</h1>
+            <p>Interactive experimentation across modern architectures, training dynamics, and LLM APIs.</p>
+          </div>
+          <div class="header-pills">
+            <span class="pill">Apple MPS / CUDA</span>
+            <span class="pill">Autograd Engine</span>
+            <span class="pill">Transformers</span>
+          </div>
+        </header>
+
+        <!-- 1. PyTorch Basics & Autograd -->
+        <section class="lab-card" id="section-pytorch">
+          <div class="card-header">
+            <div class="section-tag">MODULE 01</div>
+            <h2>PyTorch Tensors, Autograd & Training Loop</h2>
+          </div>
+          <p class="section-desc">
+            Explore automatic differentiation via computational graphs: $y = 3x^2 + 2x + 1 \implies \frac{\partial y}{\partial x} = 6x + 2$.
+            Adjust epochs and learning rate to observe real-time loss convergence with Adam.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="pytorch-model">Model Architecture</label>
+              <select id="pytorch-model">
+                <option value="linear">Linear Regression (y = W·x + b)</option>
+                <option value="mlp">Deep MLP (Linear → ReLU → Linear)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="pytorch-epochs">Epochs: <span id="epochs-display">80</span></label>
+              <input type="range" id="pytorch-epochs" min="20" max="400" step="10" value="80" />
+            </div>
+            <div class="control-group">
+              <label for="pytorch-lr">Learning Rate: <span id="lr-display">0.05</span></label>
+              <input type="range" id="pytorch-lr" min="0.005" max="0.2" step="0.005" value="0.05" />
+            </div>
+            <button class="primary-btn" id="btn-train-pytorch">Run Training Loop</button>
+          </div>
+
+          <div class="grid-2col">
+            <div class="viz-box">
+              <div class="viz-title">Adam Loss Convergence</div>
+              <svg id="pytorch-loss-chart" viewBox="0 0 500 180" class="chart-svg">
+                <path id="pytorch-loss-path" class="chart-line" d=""></path>
+                <text x="250" y="95" id="pytorch-loss-empty" class="chart-empty" text-anchor="middle">Click "Run Training Loop" to plot</text>
+              </svg>
+              <div class="stats-bar" id="pytorch-stats">
+                <span>Initial Loss: —</span>
+                <span>Final Loss: —</span>
+                <span>Convergence: —</span>
+              </div>
+            </div>
+
+            <div class="code-box">
+              <div class="code-title">Autograd Gradient Verification</div>
+              <pre><code id="autograd-display">// Live Autograd inspection
+x = torch.tensor([2.0, 3.0], requires_grad=True)
+y = 3*(x**2) + 2*x + 1
+y.sum().backward()
+// Analytical: [6*2+2, 6*3+2] = [14.0, 20.0]
+Gradients: Ready to inspect.</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. CNNs -->
+        <section class="lab-card" id="section-cnn">
+          <div class="card-header">
+            <div class="section-tag">MODULE 02</div>
+            <h2>Convolutional Neural Networks (CNN)</h2>
+          </div>
+          <p class="section-desc">
+            2D convolutions capture localized spatial patterns using learnable kernels with spatial weight sharing,
+            followed by Batch Normalization and MaxPooling downsampling.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="cnn-pattern">Synthetic Input Image Pattern</label>
+              <select id="cnn-pattern">
+                <option value="box">Bounding Box (Class A)</option>
+                <option value="cross">Cross Hair (Class B)</option>
+                <option value="diagonal">Diagonal Ridge (Class C)</option>
+              </select>
+            </div>
+            <button class="primary-btn" id="btn-run-cnn">Pass Through ConvNet</button>
+          </div>
+
+          <div class="grid-3col" id="cnn-results-grid">
+            <div class="metric-card">
+              <div class="metric-label">Input Tensor</div>
+              <div class="metric-val" id="cnn-input-dim">[1, 1, 28, 28]</div>
+              <small>Grayscale 28×28</small>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Block 1 Feature Map</div>
+              <div class="metric-val" id="cnn-block1-dim">[1, 16, 14, 14]</div>
+              <small>Conv2d(16) + MaxPool(2)</small>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Block 2 Feature Map</div>
+              <div class="metric-val" id="cnn-block2-dim">[1, 32, 7, 7]</div>
+              <small>Conv2d(32) + MaxPool(2)</small>
+            </div>
+          </div>
+
+          <div class="bar-container" id="cnn-prob-bars">
+            <div class="prob-row"><span>Class A (Box):</span><div class="bar-fill" style="width: 33%"></div><span class="prob-num">0.33</span></div>
+            <div class="prob-row"><span>Class B (Cross):</span><div class="bar-fill" style="width: 33%"></div><span class="prob-num">0.33</span></div>
+            <div class="prob-row"><span>Class C (Diagonal):</span><div class="bar-fill" style="width: 34%"></div><span class="prob-num">0.34</span></div>
+          </div>
+        </section>
+
+        <!-- 3. Sequence Modeling: RNN, LSTM, GRU -->
+        <section class="lab-card" id="section-sequence">
+          <div class="card-header">
+            <div class="section-tag">MODULE 03</div>
+            <h2>Sequence Modeling: RNN vs LSTM vs GRU</h2>
+          </div>
+          <p class="section-desc">
+            Compare recurrent inductive biases for temporal and sequential dependencies:
+            Standard RNN (simple recurrence), LSTM (input, forget, and output gates with cell state),
+            and GRU (update and reset gates).
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="seq-length">Sequence Length (Timesteps: <span id="seq-len-display">12</span>)</label>
+              <input type="range" id="seq-length" min="4" max="32" step="2" value="12" />
+            </div>
+            <button class="primary-btn" id="btn-run-seq">Compare Architectures</button>
+          </div>
+
+          <div class="grid-3col" id="seq-cards">
+            <div class="arch-card">
+              <div class="arch-name">Vanilla RNN</div>
+              <div class="arch-stat">Parameters: <strong id="rnn-params">386</strong></div>
+              <div class="arch-stat">State: <strong>Hidden h<sub>t</sub> only</strong></div>
+              <div class="arch-stat">Gate Count: <strong>0 gates</strong></div>
+              <div class="arch-badge">Prone to Vanishing Gradients</div>
+            </div>
+            <div class="arch-card highlight-card">
+              <div class="arch-name">LSTM</div>
+              <div class="arch-stat">Parameters: <strong id="lstm-params">1,442</strong></div>
+              <div class="arch-stat">State: <strong>Hidden h<sub>t</sub> & Cell c<sub>t</sub></strong></div>
+              <div class="arch-stat">Gate Count: <strong>3 gates (f, i, o)</strong></div>
+              <div class="arch-badge accent">Long-Term Memory Highway</div>
+            </div>
+            <div class="arch-card">
+              <div class="arch-name">GRU</div>
+              <div class="arch-stat">Parameters: <strong id="gru-params">1,090</strong></div>
+              <div class="arch-stat">State: <strong>Hidden h<sub>t</sub> only</strong></div>
+              <div class="arch-stat">Gate Count: <strong>2 gates (r, z)</strong></div>
+              <div class="arch-badge">Efficient Convergence</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Regularization: Dropout, BatchNorm, Early Stopping -->
+        <section class="lab-card" id="section-regularization">
+          <div class="card-header">
+            <div class="section-tag">MODULE 04</div>
+            <h2>Regularization & Overfitting Control</h2>
+          </div>
+          <p class="section-desc">
+            Prevent overfitting on noisy validation sets using Dropout (co-adaptation reduction),
+            Batch Normalization (internal covariate shift reduction), and Early Stopping (validation patience).
+          </p>
+
+          <div class="control-row toggles-row">
+            <label class="checkbox-label"><input type="checkbox" id="reg-dropout" checked /> Dropout (p=0.4)</label>
+            <label class="checkbox-label"><input type="checkbox" id="reg-batchnorm" checked /> Batch Normalization</label>
+            <label class="checkbox-label"><input type="checkbox" id="reg-earlystop" checked /> Early Stopping (patience=5)</label>
+            <button class="primary-btn" id="btn-run-reg">Train & Test Overfitting</button>
+          </div>
+
+          <div class="grid-2col">
+            <div class="viz-box">
+              <div class="viz-title">Train (Green) vs Validation (Cyan) Loss</div>
+              <svg id="reg-loss-chart" viewBox="0 0 500 180" class="chart-svg">
+                <path id="reg-train-path" class="chart-line-train" d=""></path>
+                <path id="reg-val-path" class="chart-line-val" d=""></path>
+                <text x="250" y="95" id="reg-chart-empty" class="chart-empty" text-anchor="middle">Train to view generalization gap</text>
+              </svg>
+            </div>
+            <div class="status-summary" id="reg-summary">
+              <h3>Generalization Status</h3>
+              <p>Configure toggles and run training to measure the validation gap and early stopping trigger.</p>
+              <div class="stat-pill" id="reg-status-pill">Ready</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Transfer Learning -->
+        <section class="lab-card" id="section-transfer">
+          <div class="card-header">
+            <div class="section-tag">MODULE 05</div>
+            <h2>Transfer Learning & Head Fine-Tuning</h2>
+          </div>
+          <p class="section-desc">
+            Leverage pretrained visual representations: freeze feature extractor backbone parameters
+            (<code>param.requires_grad = False</code>) and train only the specialized classification head.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="transfer-classes">Target Task Classes: <span id="classes-display">5</span></label>
+              <input type="range" id="transfer-classes" min="2" max="20" step="1" value="5" />
+            </div>
+            <button class="primary-btn" id="btn-run-transfer">Inspect Architecture</button>
+          </div>
+
+          <div class="grid-3col">
+            <div class="metric-card">
+              <div class="metric-label">Total Parameters</div>
+              <div class="metric-val" id="tl-total-params">2,660</div>
+            </div>
+            <div class="metric-card highlight">
+              <div class="metric-label">Frozen Backbone (requires_grad=False)</div>
+              <div class="metric-val" id="tl-frozen-params">448 (16.8%)</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Trainable Custom Head</div>
+              <div class="metric-val" id="tl-trainable-params">2,212</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Transformers & Attention -->
+        <section class="lab-card" id="section-transformer">
+          <div class="card-header">
+            <div class="section-tag">MODULE 06</div>
+            <h2>Transformers & Scaled Dot-Product Attention</h2>
+          </div>
+          <p class="section-desc">
+            $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+            Input an English sequence to inspect the attention heatmap matrix computed by PyTorch.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group fill-width">
+              <label for="transformer-input">Input Token Sequence</label>
+              <input type="text" id="transformer-input" value="attention is all you need for deep learning" />
+            </div>
+            <button class="primary-btn" id="btn-run-attention">Compute Attention Heatmap</button>
+          </div>
+
+          <div class="heatmap-wrap">
+            <div id="attention-matrix-grid" class="attention-grid"></div>
+            <div class="sentiment-box" id="transformer-pred-box">
+              <span>Classified Sentiment / Intent:</span>
+              <strong id="transformer-prediction">—</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Unified LLM APIs -->
+        <section class="lab-card" id="section-llm">
+          <div class="card-header">
+            <div class="section-tag">MODULE 07</div>
+            <h2>Unified LLM APIs & Open Models</h2>
+          </div>
+          <p class="section-desc">
+            Orchestrate OpenAI, Anthropic, Ollama local daemon, Hugging Face, or the built-in offline simulation assistant.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="llm-provider">Provider</label>
+              <select id="llm-provider">
+                <option value="mock">Offline Lab Generator (Zero API Key)</option>
+                <option value="openai">OpenAI (GPT-4o-mini)</option>
+                <option value="anthropic">Anthropic (Claude-3-Haiku)</option>
+                <option value="ollama">Ollama (Local daemon localhost:11434)</option>
+                <option value="huggingface">Hugging Face (Inference API)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="llm-task">Task</label>
+              <select id="llm-task">
+                <option value="generate">Text Generation</option>
+                <option value="summarize">3-Bullet Summarization</option>
+                <option value="qa">Contextual Technical Q&A</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="llm-apikey">API Key (optional for mock)</label>
+              <input type="password" id="llm-apikey" placeholder="sk-..." />
+            </div>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group fill-width">
+              <label for="llm-prompt">Prompt / Technical Context</label>
+              <textarea id="llm-prompt" rows="3">Explain how convolution and pooling layers reduce parameters and maintain spatial invariance in deep CNNs.</textarea>
+            </div>
+          </div>
+
+          <button class="primary-btn" id="btn-run-llm">Dispatch LLM Query</button>
+
+          <div class="llm-output-box">
+            <div class="llm-output-header">
+              <span id="llm-meta">Model: deeplearning-lab-assistant · Status: Ready</span>
+            </div>
+            <pre><div id="llm-response-content">Output will appear here after clicking Dispatch.</div></pre>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
