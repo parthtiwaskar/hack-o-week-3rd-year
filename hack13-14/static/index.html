@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ensemble Methods & Regularization — Week 13–14 Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌲</text></svg>"
+    />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-icon">🌲</span>
+          <div>
+            <div class="brand-title">ENSEMBLE<span>13-14</span></div>
+            <div class="brand-sub">Bagging · Boosting · Bias-Variance</div>
+          </div>
+        </div>
+
+        <div class="badge-status" id="lib-status">
+          <span class="dot"></span>
+          <span id="lib-status-text">XGBoost & LightGBM Active</span>
+        </div>
+
+        <nav class="nav-menu">
+          <a class="nav-item active" href="#section-ensembles"><span>01</span> Bagging vs. Boosting</a>
+          <a class="nav-item" href="#section-biasvariance"><span>02</span> Bias-Variance Trade-off</a>
+          <a class="nav-item" href="#section-overfitting"><span>03</span> Overfitting & Underfitting</a>
+          <a class="nav-item" href="#section-regularization"><span>04</span> L1 / L2 Regularization</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div>Week 13–14 Lab Curriculum</div>
+          <small>XGBoost + LightGBM Ready</small>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-header">
+          <div>
+            <h1>Ensemble Learning & Model Generalization</h1>
+            <p>Interactive laboratory examining Bagging, Gradient Boosting, Bias-Variance dynamics, and Regularization penalties.</p>
+          </div>
+          <div class="header-pills">
+            <span class="pill">Random Forest</span>
+            <span class="pill">XGBoost</span>
+            <span class="pill">LightGBM</span>
+          </div>
+        </header>
+
+        <!-- Module 1: Ensemble Methods -->
+        <section class="lab-card" id="section-ensembles">
+          <div class="card-header">
+            <div class="section-tag">MODULE 01</div>
+            <h2>Bagging vs. Boosting (XGBoost & LightGBM)</h2>
+          </div>
+          <p class="section-desc">
+            Bagging (Bootstrap Aggregation) trains independent learners in parallel to reduce variance.
+            Boosting trains sequential weak learners that correct the residual errors of preceding trees to reduce bias.
+          </p>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label for="ens-samples">Dataset Samples: <span id="samples-display">600</span></label>
+              <input type="range" id="ens-samples" min="200" max="1500" step="50" value="600" />
+            </div>
+            <div class="control-group">
+              <label for="ens-noise">Label Noise: <span id="noise-display">15%</span></label>
+              <input type="range" id="ens-noise" min="0" max="35" step="5" value="15" />
+            </div>
+            <button class="primary-btn" id="btn-benchmark-ensembles">Train & Benchmark Ensembles</button>
+          </div>
+
+          <div class="table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Type</th>
+                  <th>Test Accuracy</th>
+                  <th>Test ROC-AUC</th>
+                  <th>Train Accuracy</th>
+                </tr>
+              </thead>
+              <tbody id="ensemble-table-body">
+                <tr><td>Single Decision Tree</td><td>Baseline</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td>Bagging (Random Forest)</td><td>Bagging</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td>AdaBoost</td><td>Boosting</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr><td>Gradient Boosting</td><td>Boosting</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr class="highlight-row"><td>XGBoost</td><td>Optimized Boosting</td><td>—</td><td>—</td><td>—</td></tr>
+                <tr class="highlight-row"><td>LightGBM</td><td>Leaf-wise Boosting</td><td>—</td><td>—</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Module 2: Bias-Variance Decomposition -->
+        <section class="lab-card" id="section-biasvariance">
+          <div class="card-header">
+            <div class="section-tag">MODULE 02</div>
+            <h2>The Bias–Variance Trade-off</h2>
+          </div>
+          <p class="section-desc">
+            Expected Generalization Error decomposes mathematically as:
+            $$\mathbb{E}[\text{MSE}] = \text{Bias}^2 + \text{Variance} + \sigma^2_{\text{noise}}$$
+            Low complexity yields high bias (underfitting); high complexity yields high variance (overfitting).
+          </p>
+
+          <button class="primary-btn" id="btn-run-biasvariance">Compute Bias-Variance Decomposition</button>
+
+          <div class="grid-2col" style="margin-top: 20px;">
+            <div class="viz-box">
+              <div class="viz-title">Bias² (Amber) vs Variance (Cyan) vs Total MSE (Green)</div>
+              <svg id="bv-chart" viewBox="0 0 500 180" class="chart-svg">
+                <path id="bv-bias-path" class="line-bias" d=""></path>
+                <path id="bv-var-path" class="line-var" d=""></path>
+                <path id="bv-total-path" class="line-total" d=""></path>
+                <text x="250" y="95" id="bv-chart-empty" class="chart-empty" text-anchor="middle">Click to compute trade-off across tree depths</text>
+              </svg>
+              <div class="legend-row">
+                <span><i class="dot-bias"></i> Bias²</span>
+                <span><i class="dot-var"></i> Variance</span>
+                <span><i class="dot-total"></i> Total Error</span>
+              </div>
+            </div>
+
+            <div class="metric-summary" id="bv-summary-box">
+              <h3>Decomposition Insights</h3>
+              <p id="bv-summary-text">Run decomposition to evaluate optimal tree depth minimizing expected error.</p>
+              <div class="stat-pill" id="bv-sweet-spot">Optimal Depth: Ready</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 3: Overfitting & Underfitting -->
+        <section class="lab-card" id="section-overfitting">
+          <div class="card-header">
+            <div class="section-tag">MODULE 03</div>
+            <h2>Overfitting vs. Underfitting Identification</h2>
+          </div>
+          <p class="section-desc">
+            Examine the model capacity curve across decision tree depths (1 to 15). Notice how training accuracy reaches 100% while validation accuracy plateaus and declines, creating a widening generalization gap.
+          </p>
+
+          <button class="primary-btn" id="btn-run-overfitting">Plot Capacity Curves</button>
+
+          <div class="viz-box" style="margin-top: 20px;">
+            <div class="viz-title">Training Accuracy (Green) vs Validation Accuracy (Cyan) across Depth 1–15</div>
+            <svg id="overfit-chart" viewBox="0 0 500 180" class="chart-svg">
+              <path id="overfit-train-path" class="line-train" d=""></path>
+              <path id="overfit-val-path" class="line-val" d=""></path>
+              <text x="250" y="95" id="overfit-empty" class="chart-empty" text-anchor="middle">Click to plot capacity curves</text>
+            </svg>
+            <div class="legend-row">
+              <span><i class="dot-train"></i> Train Accuracy</span>
+              <span><i class="dot-val"></i> Validation Accuracy</span>
+              <span id="overfit-gap-badge" class="badge-gap">Generalization Gap: —</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 4: Regularization L1/L2 -->
+        <section class="lab-card" id="section-regularization">
+          <div class="card-header">
+            <div class="section-tag">MODULE 04</div>
+            <h2>Regularization (L1 Lasso vs. L2 Ridge in Ensembles)</h2>
+          </div>
+          <p class="section-desc">
+            L1 (Lasso / <code>reg_alpha</code>) adds a penalty proportional to the absolute magnitude of weights ($|w|$), driving coefficients to zero for feature selection.
+            L2 (Ridge / <code>reg_lambda</code>) penalizes squared magnitudes ($w^2$), smoothly shrinking weights to control variance.
+          </p>
+
+          <button class="primary-btn" id="btn-run-regularization">Evaluate L1/L2 on 15 Noisy Features</button>
+
+          <div class="grid-2col" style="margin-top: 20px;">
+            <div class="metric-card">
+              <div class="metric-label">L1 Sparsity (Lasso)</div>
+              <div class="metric-val" id="l1-zeroed">15 / 15</div>
+              <small>Irrelevant noise features driven to exact 0.0</small>
+            </div>
+            <div class="metric-card highlight">
+              <div class="metric-label">XGBoost with L1/L2 Regularization</div>
+              <div class="metric-val" id="xgb-reg-imp">+5.9%</div>
+              <small>MSE reduction on noisy test split</small>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
